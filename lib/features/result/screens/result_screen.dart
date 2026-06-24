@@ -245,20 +245,39 @@ class _InfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Row(
-          children: [
-            Text(icon, style: const TextStyle(fontSize: 18)),
-            const SizedBox(width: 8),
-            Text(label, style: AppTextStyles.bodyMedium),
-          ],
+        // Label side — takes only as much space as it needs, but yields to value
+        Expanded(
+          flex: 1,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(icon, style: const TextStyle(fontSize: 18)),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  label,
+                  style: AppTextStyles.bodyMedium,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
         ),
-        Text(
-          value,
-          style: valueLarge
-              ? AppTextStyles.headlineMedium.copyWith(color: valueColor, fontSize: 20)
-              : AppTextStyles.labelLarge.copyWith(color: valueColor),
+        const SizedBox(width: 8),
+        // Value side — right-aligned, ellipsis if still too long
+        Flexible(
+          flex: 1,
+          child: Text(
+            value,
+            style: valueLarge
+                ? AppTextStyles.headlineMedium.copyWith(color: valueColor, fontSize: 20)
+                : AppTextStyles.labelLarge.copyWith(color: valueColor),
+            textAlign: TextAlign.end,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
         ),
       ],
     );
